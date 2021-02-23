@@ -11,7 +11,6 @@ import {
 } from 'react-router-dom'
 
 const messageByStatus = (status, profile, taught) => {
-  console.log('messageByStatus', status)
   if (Object.keys(status).length === 0) return 'Status unknown.'
   if (!status.launched) return 'Please launch this app from Canvas.'
   if (!status.authorized) return "We don't have access to Canvas. Please re-launch the app."
@@ -23,11 +22,8 @@ const messageByStatus = (status, profile, taught) => {
 
 const Home = () => {
   const status = useSelector(state => state.lti)
-  console.log('ltistatus in home', status)
   const user = useSelector(state => state.user)
-  console.log('user in home', user)
   const courses = useSelector(state => state.courses)
-  console.log('courses in home', courses)
 
   const taught = courses.filter(course => course.enrollments.filter(enrollment => enrollment.type === 'teacher').length > 0)
 

@@ -5,15 +5,12 @@ const { getStatus } = initCACCL()
 
 const fetchLTI = async (userId) => {
   const ltiStatus = await getStatus()
-  console.log('ltiStatus in saga', ltiStatus)
   return ltiStatus
 }
 
 function* handleLTIReq(action) {
-  console.log('handleLTIReq')
   const cached = yield select((state) => state.lti)
   if (Object.keys(cached).length > 0) {
-    console.log('redundant call, already have lti:', cached)
   } else {
     const payload = yield call(fetchLTI, action.payload)
     yield put({
@@ -24,11 +21,9 @@ function* handleLTIReq(action) {
 }
 
 function* watchLTIRequest() {
-  console.log('watchLTIRequest')
   yield takeLatest('FETCH_LTI_STATUS', handleLTIReq)
 }
 
 export default function* ltiSaga() {
-  console.log('ltiSaga')
   yield all([fork(watchLTIRequest)])
 }
